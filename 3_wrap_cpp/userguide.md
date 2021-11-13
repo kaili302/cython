@@ -9,7 +9,7 @@ Cython has native support for most of the C++ language. Specifically:
 - Overloaded functions are supported.
 - Overloading of C++ operators (such as operator+, operator[],…) is supported
 
-# Procedure Overview¶
+# Procedure Overview
 The general procedure for wrapping a C++ file can now be described as follows:
 
 - Specify C++ language in a setup.py script or locally in a source file.
@@ -17,3 +17,6 @@ The general procedure for wrapping a C++ file can now be described as follows:
  - declare classes as cdef cppclass blocks
  - declare public names (variables, methods and constructors)
 - cimport them in one or more extension modules (.pyx files).
+
+
+Check example source code for more user guide details
