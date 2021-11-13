@@ -16,5 +16,8 @@ cdef class HelloWorld:
 cpdef char* hello_word():
     cdef char* h = "hello"
     cdef char* w = "world"
+    # cython
     cdef HelloWorld hw = HelloWorld(h, w)
+    # python
+    # hw = HelloWorld(h, w)
     return hw.sum()

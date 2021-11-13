@@ -27,6 +27,13 @@ def main():
 # extension type as:
 
 cdef class PyRectangle:
+    # If your extension type instantiates a wrapped C++ class using the default
+    # constructor, you may be able to simplify the lifecycle handling by
+    # tying it directly to the lifetime of the Python wrapper object. Instead of
+    # a pointer attribute, you can declare an instance:
+    # Cython will automatically generate code that instantiates the C++ object 
+    # instance when the Python object is created and deletes it when the Python object
+    # is garbage collected.
     cdef Rectangle c_rect  # Hold a C++ instance which we're wrapping
 
     # [cinit vs init](https://cython.readthedocs.io/en/latest/src/userguide/special_methods.html#initialisation-methods-cinit-and-init)
@@ -40,17 +47,6 @@ cdef class PyRectangle:
         cdef int width, height
         self.c_rect.getSize(&width, &height)
         return width, height
-
-    def move(self, dx, dy):
-        self.c_rect.move(dx, dy)
-
-    # Attribute access
-    @property
-    def x0(self):
-        return self.c_rect.x0
-    @x0.setter
-    def x0(self, x0):
-        self.c_rect.x0 = x0
 
 # Cython initializes C++ class attributes of a cdef class using the nullary constructor. 
 # If the class you’re wrapping does not have a nullary constructor, you must store a pointer
@@ -68,3 +64,14 @@ cdef class PyRectangle2:
 
     def __dealloc__(self):
         del self.c_rect
+
+    def get_area(self):
+        # Note that if one has pointers to C++ objects, dereferencing is optional.
+        # But must be done to avoid doing pointer arithmetic rather than
+        # arithmetic on the objects themselves
+        return self.c_rect[0].getArea()
+
+    def get_size(self):
+        cdef int width, height
+        self.c_rect.getSize(&width, &height)
+        return width, height

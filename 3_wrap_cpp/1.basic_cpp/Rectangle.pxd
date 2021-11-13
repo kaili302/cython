@@ -10,12 +10,11 @@ cdef extern from "cpp/Rectangle.cpp":
 # this will let Cython safely raise an appropriate Python exception instead (see below).
 # Without this declaration, C++ exceptions originating from the constructor will not be
 # handled by Cython.
-cdef extern from "cpp/Rectangle.h" namespace "shapes":
+cdef extern from "cpp/Rectangle.h" namespace "kli::shapes":
     cdef cppclass Rectangle:
-        # no need to list all functions, only what is needed.
+        # Can only declare public members 
+        # No need to list all functions, only what is needed
         Rectangle() except +
         Rectangle(int, int, int, int) except +
-        int x0, y0, x1, y1
         int getArea()
-        void getSize(int* width, int* height)
-        void move(int, int)
+        void getSize(int*, int*)
